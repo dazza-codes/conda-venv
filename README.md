@@ -1,6 +1,20 @@
 # conda-venv
 
-Bash functions for convenient conda env project management.
+Bash functions for convenient conda env project management.  This is a thin
+wrapper on the `conda` CLI, it should be compatible with most recent versions of
+conda and upgrades that maintain the current CLI commands.
+
+Like most tools to provide a virtual environment, these bash functions are only
+intended to create a `conda env`.  The purpose of the wrappers is to:
+
+- use a default python version (that might not be the default conda version) and 
+- to auto-detect the name for an environment based on the current working
+  directory.
+
+It is opinionated about configuring an environment to use conda-forge packages.
+This can avoid mixing packages from multiple repository sources, which often
+results in incompatible packages or broken packages.  The bash functions do
+_not_ provide any commands to install any packages.
 
 ## Getting Started
 
@@ -10,10 +24,16 @@ as copy the file to `/etc/profile.d/conda_venv.sh`.
 For example:
 
 ```sh
-wget https://raw.githubusercontent.com/dazza-codes/conda-venv/main/conda_venv.sh
-mv conda_venv.sh ~/bin/
+sudo curl -sSL https://raw.githubusercontent.com/dazza-codes/conda-venv/main/conda_venv.sh > /etc/profile.d/conda_venv.sh
 ```
 
+For a user installation, use `~/bin/conda_venv.sh`.  For example:
+
+```sh
+curl -sSL https://raw.githubusercontent.com/dazza-codes/conda-venv/main/conda_venv.sh > ~/bin/conda_venv.sh
+```
+
+Ensure the shell init includes `~/bin/` in the `$PATH` (it often does already).
 Add the following to `~/.bashrc` (or similar shell init file).
 
 ```sh
