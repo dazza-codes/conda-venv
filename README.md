@@ -149,10 +149,71 @@ alias conda-py3.9='conda deactivate; conda activate py3.9'
 alias conda-py3.10='conda deactivate; conda activate py3.10'
 ```
 
+## Apple Silicon and Intel-Compatible Terminals
+
+Clone the “iTerm” or “iTerm2” applications to Open with Rosetta
+
+- go to Applications and find iTerm or iTerm2 application
+- right-click and choose “Duplicate”
+- rename the clone to “iTerm-Intel” or “iTerm2-Intel”
+- right-click and choose “Get Info”
+- Click on the checkbox to “Open Using Rosetta”
+- Close the info dialog box and start the intel terminal
+
+If it is not already installed, this could prompt to install Rosetta.  For more information, see this apple support issue:
+- [If you need to install Rosetta on your Mac - Apple Support](https://support.apple.com/en-us/HT211861)
+
+In an intel-compatible terminal, you should get this response from `arch`
+
+```sh
+$ arch
+i386
+```
+
+## Install miniforge for arm64 and x86_64 architectures
+
+Miniforge can be installed for both arm64 and x86_64 architectures.  The following notes are adapted from this article:
+https://towardsdatascience.com/how-to-install-miniconda-x86-64-apple-m1-side-by-side-on-mac-book-m1-a476936bfaf0
+
+### Step 1 - arm64 architecture
+Use a native terminal.  Use the following for an intel-compatible installation:
+https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
+
+```sh
+mkdir -p ~/tmp
+cd ~/tmp
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
+bash Miniforge3-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
+```
+
+### Step 2 - x86_64 architecture
+Use a rosetta terminal.  Use the following for an arm64 installation:
+https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
+
+```sh
+mkdir -p ~/tmp
+cd ~/tmp
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
+bash Miniforge3-MacOSX-x86_64.sh -p /usr/local/miniforge3 -f -b
+```
+
+### Step 3 - Configure ZSH for multiple installations of miniforge
+
+The ZSH init script can be setup to configure conda with `arch` specific paths.
+
+```sh
+# ~/.zshrc file
+if [ "$(arch)" = "arm64" ]; then
+    eval "$(/opt/miniforge3/bin/conda shell.zsh hook)"
+else
+    eval "$(/usr/local/miniforge3/bin/conda shell.zsh hook)"
+fi
+```
+
 ## LICENSE
 
 ```text
-Copyright 2019-2021 Darren Weber
+Copyright 2019-2022 Darren Weber
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
