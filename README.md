@@ -176,8 +176,8 @@ Miniforge can be installed for both arm64 and x86_64 architectures.  The followi
 https://towardsdatascience.com/how-to-install-miniconda-x86-64-apple-m1-side-by-side-on-mac-book-m1-a476936bfaf0
 
 ### Step 1 - arm64 architecture
-Use a native terminal.  Use the following for an intel-compatible installation:
-https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
+
+Use a native terminal.
 
 ```sh
 mkdir -p ~/tmp
@@ -187,8 +187,8 @@ bash Miniforge3-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
 ```
 
 ### Step 2 - x86_64 architecture
-Use a rosetta terminal.  Use the following for an arm64 installation:
-https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
+
+Use a rosetta terminal.
 
 ```sh
 mkdir -p ~/tmp
