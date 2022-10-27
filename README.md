@@ -34,9 +34,18 @@ curl -sSL https://raw.githubusercontent.com/dazza-codes/conda-venv/main/conda_ve
 ```
 
 Ensure the shell init includes `~/bin/` in the `$PATH` (it often does already).
-Add the following to `~/.bashrc` (or similar shell init file).
+Add the following to `~/.bashrc` or `~/.zshrc` (or similar shell init file).
 
 ```sh
+if [ -f ~/bin/conda_venv.sh ]; then
+    source ~/bin/conda_venv.sh
+fi
+```
+
+For ZSH, the bash completion support could be enabled using
+
+```sh
+autoload bashcompinit && bashcompinit
 if [ -f ~/bin/conda_venv.sh ]; then
     source ~/bin/conda_venv.sh
 fi
@@ -183,7 +192,19 @@ Use a native terminal.
 mkdir -p ~/tmp
 cd ~/tmp
 wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
-bash Miniforge3-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
+sudo /bin/bash Miniforge3-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
+sudo chown -R "$USER":admin /opt/miniforge3
+```
+
+If a specific version is required, find the required assets from the 
+[miniforge releases](https://github.com/conda-forge/miniforge/releases), e.g.
+
+```sh
+mkdir -p ~/tmp
+cd ~/tmp
+wget https://github.com/conda-forge/miniforge/releases/download/4.14.0-2/Miniforge3-4.14.0-2-MacOSX-arm64.sh
+sudo /bin/bash Miniforge3-4.14.0-2-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
+sudo chown -R "$USER":admin /opt/miniforge3
 ```
 
 ### Step 2 - x86_64 architecture
@@ -194,7 +215,19 @@ Use a rosetta terminal.
 mkdir -p ~/tmp
 cd ~/tmp
 wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
-bash Miniforge3-MacOSX-x86_64.sh -p /usr/local/miniforge3 -f -b
+sudo /bin/bash Miniforge3-MacOSX-x86_64.sh -p /usr/local/miniforge3 -f -b
+sudo chown -R "$USER":admin /usr/local/miniforge3
+```
+
+If a specific version is required, find the required assets from the 
+[miniforge releases](https://github.com/conda-forge/miniforge/releases), e.g.
+
+```sh
+mkdir -p ~/tmp
+cd ~/tmp
+wget https://github.com/conda-forge/miniforge/releases/download/4.14.0-2/Miniforge3-4.14.0-2-MacOSX-x86_64.sh
+sudo /bin/bash Miniforge3-4.14.0-2-MacOSX-x86_64.sh -p /usr/local/miniforge3 -f -b
+sudo chown -R "$USER":admin /usr/local/miniforge3
 ```
 
 ### Step 3 - Configure ZSH for multiple installations of miniforge
