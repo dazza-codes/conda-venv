@@ -179,6 +179,14 @@ $ arch
 i386
 ```
 
+### Intel-compatible terminal in PyCharm
+
+You can configure the terminal shell in `Preferences | Tools | Terminal` and set the `Shell Path:` like so:
+
+```sh
+env /usr/bin/arch -x86_64 /bin/zsh --login
+```
+
 ## Install miniforge for arm64 and x86_64 architectures
 
 Miniforge can be installed for both arm64 and x86_64 architectures.  The following notes are adapted from this article:
