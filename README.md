@@ -158,6 +158,19 @@ alias conda-py3.9='conda deactivate; conda activate py3.9'
 alias conda-py3.10='conda deactivate; conda activate py3.10'
 ```
 
+## Completion on ZSH
+
+Use brew to install bash and zsh completion packages.  Update `~/.zshrc`
+to enable completions:
+
+```sh
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+    autoload -Uz compinit
+    compinit
+fi
+```
+
 ## Apple Silicon and Intel-Compatible Terminals
 
 Clone the “iTerm” or “iTerm2” applications to Open with Rosetta
