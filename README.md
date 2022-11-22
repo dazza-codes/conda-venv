@@ -56,6 +56,13 @@ fi
 The `conda-install` function will start to install the latest miniconda3 on OSX or Linux.
 Follow the prompts from the conda installer.
 
+```shell
+conda-install
+sudo /bin/bash /tmp/Miniforge3-Darwin-x86_64.sh -p /usr/local/miniforge3 -f -b
+sudo chown -R $USER:admin /usr/local/miniforge3
+/usr/local/miniforge3/bin/conda init
+```
+
 ## Project conda-venv
 
 The most common use of these bash functions is to activate a project conda env
