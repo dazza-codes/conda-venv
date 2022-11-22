@@ -148,33 +148,39 @@ conda-venv () {
 }
 
 conda-install () {
-    # Support OSX and Linux - a Windows user can add support for it later
-    if [ $(uname) = "Darwin" ]; then
-        if [ $(uname -m) = "x86_64" ]; then
-            installer="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh"
-        else
-            if [ $(uname -m) = "arm64" ]; then
-                installer="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh"
-            fi
-        fi
-    else
-        if [ $(uname) = "Linux" ]; then
-            if [ $(uname -m) = "x86_64" ]; then
-                installer="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"
-            else
-                if [ $(uname -m) = "aarch64" ]; then
-                    installer="https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh"
-                fi
-            fi
-        else
-            # TODO: support windows?
-            exit 1
-        fi
-    fi
+    root_url="https://github.com/conda-forge/miniforge/releases/latest/download"
+    installer="Miniforge3-$(uname)-$(uname -m).sh"
+    install_script="/tmp/${installer}"
+    echo "Downloading: ${root_url}/${installer}"
+    curl -L -s "${root_url}/${installer}" > "$install_script"
 
-    install_script="/tmp/$(basename $installer)"
-    curl --silent $installer > "$install_script"
-    echo "Run the downloaded installer: ${install_script}"
+    echo "To run the downloaded installer: sudo /bin/bash $install_script -f -b"
+    if [ $(uname -m) = "x86_64" ]; then
+      echo "Optional installation to custom path:  sudo /bin/bash $install_script -p /usr/local/miniforge3 -f -b"
+      echo "Set permissions on the installation:   sudo chown -R $USER:admin /usr/local/miniforge3"
+    fi
+    if [ $(uname -m) = "arm64" ]; then
+      echo "Optional installation to custom path:  sudo /bin/bash $install_script -p /opt/miniforge3 -f -b"
+      echo "Set permissions on the installation:   sudo chown -R $USER:admin /opt/miniforge3"
+    fi
+}
+
+mamba-install () {
+    root_url="https://github.com/conda-forge/miniforge/releases/latest/download"
+    installer="Mambaforge-$(uname)-$(uname -m).sh"
+    install_script="/tmp/${installer}"
+    echo "Downloading: ${root_url}/${installer}"
+    curl -L -s "${root_url}/${installer}" > "$install_script"
+
+    echo "To run the downloaded installer:       sudo /bin/bash $install_script -f -b"
+    if [ $(uname -m) = "x86_64" ]; then
+      echo "Optional installation to custom path:  sudo /bin/bash $install_script -p /usr/local/mambaforge -f -b"
+      echo "Set permissions on the installation:   sudo chown -R $USER:admin /usr/local/mambaforge"
+    fi
+    if [ $(uname -m) = "arm64" ]; then
+      echo "Optional installation to custom path:  sudo /bin/bash $install_script -p /opt/mambaforge -f -b"
+      echo "Set permissions on the installation:   sudo chown -R $USER:admin /opt/mambaforge"
+    fi
 }
 
 _conda-venv-completions () {
