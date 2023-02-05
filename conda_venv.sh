@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2019-2022 Darren Weber
+# Copyright 2019-2023 Darren Weber
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 # Declare a default python version to support; this could be the lowest
 # version that is still in active maintenance or it could match the current
 # default version used in Homebrew or an Ubuntu LTS release.
-export PYTHON_SUPPORT_VERSION=${PYTHON_SUPPORT_VERSION:-3.9}
+export PYTHON_SUPPORT_VERSION=${PYTHON_SUPPORT_VERSION:-3.10}
 
 # The conda-venv-py?? functions could be run anytime there is a patch release to
 # any python version, updates to conda or anytime a clean conda env is required
@@ -35,25 +35,20 @@ conda-subdir () {
     if [ $(uname) = "Darwin" ]; then
         if [ $(uname -m) = "x86_64" ]; then
             echo "osx-64"
-        else
-            if [ $(uname -m) = "arm64" ]; then
-                echo "osx-arm64"
-            fi
         fi
-    else
-        if [ $(uname) = "Linux" ]; then
-            if [ $(uname -m) = "x86_64" ]; then
-                echo "linux-64"
-            else
-                if [ $(uname -m) = "aarch64" ]; then
-                    echo "linux-arm64"
-                fi
-            fi
-        else
-            # TODO: support windows?
-            exit 1
+        if [ $(uname -m) = "arm64" ]; then
+            echo "osx-arm64"
         fi
     fi
+    if [ $(uname) = "Linux" ]; then
+        if [ $(uname -m) = "x86_64" ]; then
+            echo "linux-64"
+        fi
+        if [ $(uname -m) = "aarch64" ]; then
+            echo "linux-arm64"
+        fi
+    fi
+    # TODO: support windows?
 }
 
 export CONDA_SUBDIR=$(conda-subdir)
@@ -88,12 +83,17 @@ conda-venv-py3.10 () {
     conda-venv-base 3.10
 }
 
+conda-venv-py3.11 () {
+    conda-venv-base 3.11
+}
+
 # declare some useful aliases to use a conda python version;
 # these aliases simply try to activate an existing env.
 alias conda-py3.7='conda deactivate; conda activate py3.7'
 alias conda-py3.8='conda deactivate; conda activate py3.8'
 alias conda-py3.9='conda deactivate; conda activate py3.9'
 alias conda-py3.10='conda deactivate; conda activate py3.10'
+alias conda-py3.11='conda deactivate; conda activate py3.11'
 
 conda-project () {
     # The project name is defined by CONDA_ENV or the current working directory
@@ -144,7 +144,9 @@ conda-venv () {
         conda-venv-create "${py_ver}"
     fi
     command -v poetry > /dev/null
-    python --version
+    if command -v python > /dev/null; then
+        python --version
+    fi
 }
 
 conda-install () {
@@ -175,16 +177,16 @@ mamba-install () {
     echo "To run the downloaded installer:       sudo /bin/bash $install_script -f -b"
     if [ $(uname -m) = "x86_64" ]; then
       echo "Optional installation to custom path:  sudo /bin/bash $install_script -p /usr/local/mambaforge -f -b"
-      echo "Set permissions on the installation:   sudo chown -R $USER:admin /usr/local/mambaforge"
+      echo "Set permissions on the installation:   sudo chown -R ${USER}:staff /usr/local/mambaforge"
     fi
     if [ $(uname -m) = "arm64" ]; then
       echo "Optional installation to custom path:  sudo /bin/bash $install_script -p /opt/mambaforge -f -b"
-      echo "Set permissions on the installation:   sudo chown -R $USER:admin /opt/mambaforge"
+      echo "Set permissions on the installation:   sudo chown -R ${USER}:staff /opt/mambaforge"
     fi
 }
 
 _conda-venv-completions () {
-    command_options="3.7 3.8 3.9 3.10"
+    command_options="3.7 3.8 3.9 3.10 3.11"
     COMPREPLY=($(compgen -W "${command_options}" "${COMP_WORDS[1]}"))
 }
 

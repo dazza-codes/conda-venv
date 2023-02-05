@@ -16,6 +16,10 @@ This can avoid mixing packages from multiple repository sources, which often
 results in incompatible packages or broken packages.  The bash functions do
 _not_ provide any commands to install any packages.
 
+The `conda-venv` utility is designed to help manage environments with any available
+[python version](https://devguide.python.org/versions/).  A default version
+can be easily configured.
+
 ## Getting Started
 
 Source the `conda_venv.sh` file in `~/.bashrc` or similar shell-init, such
@@ -45,15 +49,15 @@ fi
 For ZSH, the bash completion support could be enabled using
 
 ```sh
-autoload bashcompinit && bashcompinit
 if [ -f ~/bin/conda_venv.sh ]; then
+    autoload bashcompinit && bashcompinit
     source ~/bin/conda_venv.sh
 fi
 ```
 
 ## conda-install
 
-The `conda-install` function will start to install the latest miniconda3 on OSX or Linux.
+The `conda-install` function will try to install the latest miniforge variant of conda (on OSX or Linux).
 Follow the prompts from the conda installer.
 
 ```shell
@@ -62,6 +66,9 @@ sudo /bin/bash /tmp/Miniforge3-Darwin-x86_64.sh -p /usr/local/miniforge3 -f -b
 sudo chown -R $USER:admin /usr/local/miniforge3
 /usr/local/miniforge3/bin/conda init
 ```
+
+Similarly, the `mamba-install` function will try to install the latest mambaforge
+variant of conda (on OSX or Linux).
 
 ## Project conda-venv
 
@@ -122,7 +129,7 @@ conda config --env --set channel_priority strict
 A default python version is declared using, e.g.
 
 ```sh
-export PYTHON_SUPPORT_VERSION=3.7
+export PYTHON_SUPPORT_VERSION=3.9
 ```
 
 If you prefer to use a different default version, then edit that env-var in
@@ -131,6 +138,7 @@ is not automatically updated.
 
 This is based on the oldest python version in support.
 
+- [Status of Python versions](https://devguide.python.org/versions/)
 - [Status of Python branches](https://devguide.python.org/#status-of-python-branches)
 - [Status of Python chart](https://python-release-cycle.glitch.me/)
 
@@ -147,134 +155,36 @@ version, updates to conda or anytime a clean conda env is required with a
 non-default python version.  
 
 ```sh
-conda-venv-base 3.6  # creates py3.6
 conda-venv-base 3.7  # creates py3.7
 conda-venv-base 3.8  # creates py3.8
 conda-venv-base 3.9  # creates py3.9
 conda-venv-base 3.10  # creates py3.10
+conda-venv-base 3.11  # creates py3.11
 ```
 
 The `conda_venv.sh` script provides some sample bash aliases for an existing
 conda env with a python version, e.g.:
 
 ```sh
-alias conda-py3.6='conda deactivate; conda activate py3.6'
 alias conda-py3.7='conda deactivate; conda activate py3.7'
 alias conda-py3.8='conda deactivate; conda activate py3.8'
 alias conda-py3.9='conda deactivate; conda activate py3.9'
 alias conda-py3.10='conda deactivate; conda activate py3.10'
+alias conda-py3.11='conda deactivate; conda activate py3.11'
 ```
 
-## Completion on ZSH
+# Python on Apple Silicon
 
-Use brew to install bash and zsh completion packages.  Update `~/.zshrc`
-to enable completions:
+Using conda to manage python versions can be a powerful, reliable solution.  But there are some complications for working with python on Apple Silicon, to get support for either arm64 or Intel compatible libraries.  For additional tips on working with python on Apple Silicon, see these references below.
 
-```sh
-if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    autoload -Uz compinit
-    compinit
-fi
-```
-
-## Apple Silicon and Intel-Compatible Terminals
-
-Clone the “iTerm” or “iTerm2” applications to Open with Rosetta
-
-- go to Applications and find iTerm or iTerm2 application
-- right-click and choose “Duplicate”
-- rename the clone to “iTerm-Intel” or “iTerm2-Intel”
-- right-click and choose “Get Info”
-- Click on the checkbox to “Open Using Rosetta”
-- Close the info dialog box and start the intel terminal
-
-If it is not already installed, this could prompt to install Rosetta.  For more information, see this apple support issue:
-- [If you need to install Rosetta on your Mac - Apple Support](https://support.apple.com/en-us/HT211861)
-
-In an intel-compatible terminal, you should get this response from `arch`
-
-```sh
-$ arch
-i386
-```
-
-### Intel-compatible terminal in PyCharm
-
-You can configure the terminal shell in `Preferences | Tools | Terminal` and set the `Shell Path:` like so:
-
-```sh
-env /usr/bin/arch -x86_64 /bin/zsh --login
-```
-
-## Install miniforge for arm64 and x86_64 architectures
-
-Miniforge can be installed for both arm64 and x86_64 architectures.  The following notes are adapted from this article:
-https://towardsdatascience.com/how-to-install-miniconda-x86-64-apple-m1-side-by-side-on-mac-book-m1-a476936bfaf0
-
-### Step 1 - arm64 architecture
-
-Use a native terminal.
-
-```sh
-mkdir -p ~/tmp
-cd ~/tmp
-wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
-sudo /bin/bash Miniforge3-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
-sudo chown -R "$USER":admin /opt/miniforge3
-```
-
-If a specific version is required, find the required assets from the 
-[miniforge releases](https://github.com/conda-forge/miniforge/releases), e.g.
-
-```sh
-mkdir -p ~/tmp
-cd ~/tmp
-wget https://github.com/conda-forge/miniforge/releases/download/4.14.0-2/Miniforge3-4.14.0-2-MacOSX-arm64.sh
-sudo /bin/bash Miniforge3-4.14.0-2-MacOSX-arm64.sh -p /opt/miniforge3 -f -b
-sudo chown -R "$USER":admin /opt/miniforge3
-```
-
-### Step 2 - x86_64 architecture
-
-Use a rosetta terminal.
-
-```sh
-mkdir -p ~/tmp
-cd ~/tmp
-wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
-sudo /bin/bash Miniforge3-MacOSX-x86_64.sh -p /usr/local/miniforge3 -f -b
-sudo chown -R "$USER":admin /usr/local/miniforge3
-```
-
-If a specific version is required, find the required assets from the 
-[miniforge releases](https://github.com/conda-forge/miniforge/releases), e.g.
-
-```sh
-mkdir -p ~/tmp
-cd ~/tmp
-wget https://github.com/conda-forge/miniforge/releases/download/4.14.0-2/Miniforge3-4.14.0-2-MacOSX-x86_64.sh
-sudo /bin/bash Miniforge3-4.14.0-2-MacOSX-x86_64.sh -p /usr/local/miniforge3 -f -b
-sudo chown -R "$USER":admin /usr/local/miniforge3
-```
-
-### Step 3 - Configure ZSH for multiple installations of miniforge
-
-The ZSH init script can be setup to configure conda with `arch` specific paths.
-
-```sh
-# ~/.zshrc file
-if [ "$(arch)" = "arm64" ]; then
-    eval "$(/opt/miniforge3/bin/conda shell.zsh hook)"
-else
-    eval "$(/usr/local/miniforge3/bin/conda shell.zsh hook)"
-fi
-```
+- [Setup Terminals](SETUP_TERMINAL.md)
+- [Setup Homebrew](SETUP_HOMEBREW.md)
+- [Setup Miniforge](SETUP_MINIFORGE.md)
 
 ## LICENSE
 
 ```text
-Copyright 2019-2022 Darren Weber
+Copyright 2019-2023 Darren Weber
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
