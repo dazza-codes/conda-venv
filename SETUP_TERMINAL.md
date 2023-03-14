@@ -74,14 +74,6 @@ style = "bold yellow"
 format = "[$env_value]($style) "
 ```
 
-### Intel-compatible terminal in PyCharm
-
-You can configure the terminal shell in `Preferences | Tools | Terminal` and set the `Shell Path:` like so:
-
-```sh
-env /usr/bin/arch -x86_64 /bin/zsh --login
-```
-
 ### Docker Default Architecture
 
 ```sh
@@ -90,4 +82,62 @@ env /usr/bin/arch -x86_64 /bin/zsh --login
 if [ "$(uname -m)" = "x86_64" ]; then
     export DOCKER_DEFAULT_PLATFORM=linux/amd64
 fi
+```
+
+### Intel-compatible terminal in PyCharm
+
+You can configure the terminal shell in `Preferences | Tools | Terminal` and set the `Shell Path:` like so:
+
+```sh
+env /usr/bin/arch -x86_64 /bin/zsh --login
+```
+
+### Intel-compatible terminal in VSCode
+
+This [blog post](https://dev.to/markwitt_me/creating-a-custom-vscode-terminal-profile-for-using-rosetta-on-an-m1-mac-apple-silicon-2gb2) has a good description and illustration of this approach.
+
+Try this in `settings.json`
+
+```json
+{
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "zsh",
+      "args": [
+        "-l"
+      ]
+    },
+    "bash": {
+      "path": "bash",
+      "args": [
+        "-l"
+      ],
+      "icon": "terminal-bash"
+    },
+    "fish": {
+      "path": "fish",
+      "args": [
+        "-l"
+      ]
+    },
+    "tmux": {
+      "path": "tmux",
+      "icon": "terminal-tmux"
+    },
+    "pwsh": {
+      "path": "pwsh",
+      "icon": "terminal-powershell"
+    },
+    "rosetta": {
+      "path": "arch",
+      "args": [
+        "-x86_64",
+        "zsh",
+        "-l"
+      ],
+      "overrideName": true
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "rosetta"
+}
 ```
