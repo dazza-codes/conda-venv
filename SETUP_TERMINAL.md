@@ -74,7 +74,29 @@ style = "bold yellow"
 format = "[$env_value]($style) "
 ```
 
-### Intel-compatible terminal in PyCharm
+### Intel-compatible terminal in IDEs
+
+#### Intel-compatible terminal in VSCode
+
+On Apple Silicon laptops, VSCode can use rosetta for the integrated terminal.  
+This can be important for python development to get packages installed with `x86_64` binaries.
+
+To create a custom VSCode Terminal Profile for using Rosetta on Apple Silicon, add these settings:
+
+```json
+{
+  "terminal.integrated.profiles.osx": {
+    "rosetta": {
+      "path": "arch",
+      "args": ["-x86_64", "zsh", "-l"],
+      "overrideName": true
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "rosetta"
+}
+```
+
+#### Intel-compatible terminal in PyCharm
 
 You can configure the terminal shell in `Preferences | Tools | Terminal` and set the `Shell Path:` like so:
 
