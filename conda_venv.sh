@@ -67,10 +67,6 @@ conda-venv-base () {
     # ?? conda env config vars set CONDA_SUBDIR=osx-arm64
 }
 
-conda-venv-py3.7 () {
-    conda-venv-base 3.7
-}
-
 conda-venv-py3.8 () {
     conda-venv-base 3.8
 }
@@ -89,7 +85,6 @@ conda-venv-py3.11 () {
 
 # declare some useful aliases to use a conda python version;
 # these aliases simply try to activate an existing env.
-alias conda-py3.7='conda deactivate; conda activate py3.7'
 alias conda-py3.8='conda deactivate; conda activate py3.8'
 alias conda-py3.9='conda deactivate; conda activate py3.9'
 alias conda-py3.10='conda deactivate; conda activate py3.10'
@@ -186,7 +181,7 @@ mamba-install () {
 }
 
 _conda-venv-completions () {
-    command_options="3.7 3.8 3.9 3.10 3.11"
+    command_options="3.8 3.9 3.10 3.11"
     COMPREPLY=($(compgen -W "${command_options}" "${COMP_WORDS[1]}"))
 }
 
