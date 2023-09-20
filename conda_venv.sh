@@ -22,7 +22,7 @@
 # Declare a default python version to support; this could be the lowest
 # version that is still in active maintenance or it could match the current
 # default version used in Homebrew or an Ubuntu LTS release.
-export PYTHON_SUPPORT_VERSION=${PYTHON_SUPPORT_VERSION:-3.10}
+export PYTHON_SUPPORT_VERSION=${PYTHON_SUPPORT_VERSION:-3.11}
 
 # The conda-venv-py?? functions could be run anytime there is a patch release to
 # any python version, updates to conda or anytime a clean conda env is required
