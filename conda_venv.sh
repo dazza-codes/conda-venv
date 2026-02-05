@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2019-2023 Darren Weber
+# Copyright 2019-2026 Darren Weber
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 # Declare a default python version to support; this could be the lowest
 # version that is still in active maintenance or it could match the current
 # default version used in Homebrew or an Ubuntu LTS release.
-export PYTHON_SUPPORT_VERSION=${PYTHON_SUPPORT_VERSION:-3.11}
+export PYTHON_SUPPORT_VERSION=${PYTHON_SUPPORT_VERSION:-3.12}
 
 # The conda-venv-py?? functions could be run anytime there is a patch release to
 # any python version, updates to conda or anytime a clean conda env is required
@@ -67,14 +67,6 @@ conda-venv-base () {
     # ?? conda env config vars set CONDA_SUBDIR=osx-arm64
 }
 
-conda-venv-py3.8 () {
-    conda-venv-base 3.8
-}
-
-conda-venv-py3.9 () {
-    conda-venv-base 3.9
-}
-
 conda-venv-py3.10 () {
     conda-venv-base 3.10
 }
@@ -83,12 +75,25 @@ conda-venv-py3.11 () {
     conda-venv-base 3.11
 }
 
+conda-venv-py3.12 () {
+    conda-venv-base 3.12
+}
+
+conda-venv-py3.13 () {
+    conda-venv-base 3.13
+}
+
+conda-venv-py3.14 () {
+    conda-venv-base 3.14
+}
+
 # declare some useful aliases to use a conda python version;
 # these aliases simply try to activate an existing env.
-alias conda-py3.8='conda deactivate; conda activate py3.8'
-alias conda-py3.9='conda deactivate; conda activate py3.9'
 alias conda-py3.10='conda deactivate; conda activate py3.10'
 alias conda-py3.11='conda deactivate; conda activate py3.11'
+alias conda-py3.12='conda deactivate; conda activate py3.12'
+alias conda-py3.13='conda deactivate; conda activate py3.13'
+alias conda-py3.14='conda deactivate; conda activate py3.14'
 
 conda-project () {
     # The project name is defined by CONDA_ENV or the current working directory

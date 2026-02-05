@@ -184,7 +184,7 @@ Using conda to manage python versions can be a powerful, reliable solution.  But
 ## LICENSE
 
 ```text
-Copyright 2019-2023 Darren Weber
+Copyright 2019-2026 Darren Weber
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
